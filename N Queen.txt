@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve(int col, vectorstring& board, vectorvectorstring& result, int n,
+               vectorint& leftRow, vectorint& lowerDiagonal, vectorint& upperDiagonal) {
+        if (col == n) {
+            result.push_back(board);
+            return;
+        }
+        for (int row = 0; row  n; row++) {
+            if (leftRow[row] == 0 && lowerDiagonal[row + col] == 0 && upperDiagonal[n - 1 + col - row] == 0) {
+                board[row][col] = 'Q';
+                leftRow[row] = 1;
+                lowerDiagonal[row + col] = 1;
+                upperDiagonal[n - 1 + col - row] = 1;
+                solve(col + 1, board, result, n, leftRow, lowerDiagonal, upperDiagonal);
+                leftRow[row] = 0;
+                lowerDiagonal[row + col] = 0;
+                upperDiagonal[n - 1 + col - row] = 0;
+                board[row][col] = '.';
+            }
+        }
+    }
+
+    vectorvectorstring solveNQueens(int n) {
+        vectorvectorstring result;
+        vectorstring board(n, string(n, '.'));
+        vectorint leftRow(n, 0), upperDiagonal(2  n - 1, 0), lowerDiagonal(2  n - 1, 0);
+        solve(0, board, result, n, leftRow, lowerDiagonal, upperDiagonal);
+        return result;
+    }
