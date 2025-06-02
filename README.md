@@ -1,5 +1,5 @@
 WeatherTrack - Android Weather Monitoring App
-
+I have uploaded the zip file of the android application
 Description:
 WeatherTrack is an Android application that allows users to track daily weather stats in their city. It fetches weather data (temperature, humidity, and condition) from a mock API or static JSON file, stores the data locally every 6 hours using Room, and displays a summary view showing temperature trends over the past week. The app is built using Java and follows the MVVM or Clean Architecture pattern.
 
