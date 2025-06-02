@@ -1,31 +1,30 @@
-#include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
-void solve(int col, vectorstring& board, vectorvectorstring& result, int n,
-               vectorint& leftRow, vectorint& lowerDiagonal, vectorint& upperDiagonal) {
-        if (col == n) {
-            result.push_back(board);
-            return;
-        }
-        for (int row = 0; row  n; row++) {
-            if (leftRow[row] == 0 && lowerDiagonal[row + col] == 0 && upperDiagonal[n - 1 + col - row] == 0) {
-                board[row][col] = 'Q';
-                leftRow[row] = 1;
-                lowerDiagonal[row + col] = 1;
-                upperDiagonal[n - 1 + col - row] = 1;
-                solve(col + 1, board, result, n, leftRow, lowerDiagonal, upperDiagonal);
-                leftRow[row] = 0;
-                lowerDiagonal[row + col] = 0;
-                upperDiagonal[n - 1 + col - row] = 0;
-                board[row][col] = '.';
-            }
-        }
+bool dfs(int node, vector<vector<int>>& adj, vector<int>& visited) {
+    visited[node] = 1; 
+
+    for (int neighbor : adj[node]) {
+        if (visited[neighbor] == 1) return true; // cycle found
+        if (visited[neighbor] == 0 && dfs(neighbor, adj, visited)) return true;
     }
 
-    vectorvectorstring solveNQueens(int n) {
-        vectorvectorstring result;
-        vectorstring board(n, string(n, '.'));
-        vectorint leftRow(n, 0), upperDiagonal(2  n - 1, 0), lowerDiagonal(2  n - 1, 0);
-        solve(0, board, result, n, leftRow, lowerDiagonal, upperDiagonal);
-        return result;
+    visited[node] = 2;
+    return false;
+}
+
+bool hasCircularDependency(int n, vector<vector<int>>& edges) {
+    vector<vector<int>> adj(n);
+    for (auto& edge : edges) {
+        int from = edge[0], to = edge[1];
+        adj[from].push_back(to);
     }
+
+    vector<int> visited(n, 0); // 0 = unvisited, 1 = visiting, 2 = visited
+
+    for (int i = 0; i < n; ++i) {
+        if (visited[i] == 0 && dfs(i, adj, visited)) return true;
+    }
+
+    return false;
+}
